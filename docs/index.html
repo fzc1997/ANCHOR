@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANCHOR: haplotype-aware allelic &amp; isoform analysis for single-cell long-read RNA sequencing</title>
+<meta name="description" content="ANCHOR is a haplotype-aware framework that performs de novo variant calling, molecule-level haplotype assignment and isoform-resolved allelic quantification from single-cell long-read RNA sequencing, with no phased genotype and no deep learning. Best F1 95.6% on HG002 (vs Clair3-RNA 85.4%, LongCallR 73.0%).">
+<link rel="canonical" href="https://fzc1997.github.io/ANCHOR/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<!-- Open Graph / social + AI preview -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="ANCHOR: haplotype-aware allelic and isoform analysis for single-cell long-read RNA sequencing">
+<meta property="og:description" content="De novo variant calling + molecule-level haplotype assignment + isoform-resolved allele-specific expression from single-cell long reads. No phased genotype, no deep learning. Best F1 95.6% on HG002.">
+<meta property="og:url" content="https://fzc1997.github.io/ANCHOR/">
+<meta name="twitter:card" content="summary">
+<meta name="citation_title" content="ANCHOR: haplotype-aware allelic and isoform inference from single-cell long-read RNA sequencing with de novo variant calling">
+<meta name="citation_doi" content="10.64898/2026.06.08.730656">
+<meta name="citation_public_url" content="https://www.biorxiv.org/content/10.64898/2026.06.08.730656v1">
+
+<style>
+:root{--ink:#1a1a1a;--mut:#555;--line:#e2e2e2;--accent:#0b5;--link:#0645ad;--bg:#fff;--code:#f5f5f5}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);background:var(--bg);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:2.2rem 1.15rem 4rem}
+h1{font-size:1.72rem;line-height:1.25;margin:.2em 0 .1em;letter-spacing:-.01em}
+h2{font-size:1.28rem;margin:2.1em 0 .5em;padding-top:.3em;border-top:1px solid var(--line)}
+h3{font-size:1.05rem;margin:1.4em 0 .35em}
+p{margin:.7em 0}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+code{background:var(--code);padding:.1em .35em;border-radius:3px;font-size:.9em}
+.sub{color:var(--mut);font-size:.98rem;margin:.3em 0 1.4em}
+.tldr{background:#f0faf4;border:1px solid #bfe6cf;border-left:4px solid var(--accent);
+  border-radius:6px;padding:.85rem 1rem;margin:1.2rem 0;font-size:1rem}
+.tldr strong{color:#07603a}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left}
+th{background:#fafafa;font-weight:600}
+tbody tr:first-child{background:#f0faf4;font-weight:600}
+.meta{color:var(--mut);font-size:.9rem}
+.badges a{display:inline-block;margin:.15rem .4rem .15rem 0;padding:.2rem .55rem;
+  border:1px solid var(--line);border-radius:5px;font-size:.85rem;color:var(--mut)}
+footer{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  color:var(--mut);font-size:.86rem}
+.q{font-weight:600;margin-top:1.3em}
+@media (max-width:520px){.wrap{padding:1.4rem 1rem 3rem}h1{font-size:1.42rem}}
+</style>
+
+<!-- ============ Structured data: ScholarlyArticle ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "ANCHOR: haplotype-aware allelic and isoform inference from single-cell long-read RNA sequencing with de novo variant calling",
+  "name": "ANCHOR: haplotype-aware allelic and isoform inference from single-cell long-read RNA sequencing with de novo variant calling",
+  "datePublished": "2026-06-11",
+  "inLanguage": "en",
+  "identifier": {"@type": "PropertyValue", "propertyID": "DOI", "value": "10.64898/2026.06.08.730656"},
+  "sameAs": "https://www.biorxiv.org/content/10.64898/2026.06.08.730656v1",
+  "author": [
+    {"@type": "Person", "name": "Z.-C. Fu"},
+    {"@type": "Person", "name": "C. Zhang"},
+    {"@type": "Person", "name": "Y. Yan"},
+    {"@type": "Person", "name": "Y. Xu"},
+    {"@type": "Person", "name": "X. Yin"},
+    {"@type": "Person", "name": "T. Tao"},
+    {"@type": "Person", "name": "P. Lu"},
+    {"@type": "Person", "name": "Y. Liang"},
+    {"@type": "Person", "name": "H. Wu"},
+    {"@type": "Person", "name": "W. Cui"},
+    {"@type": "Person", "name": "R. Hou"},
+    {"@type": "Person", "name": "X. Chen"},
+    {"@type": "Person", "name": "Y. Ke"},
+    {"@type": "Person", "name": "Y. Li"},
+    {"@type": "Person", "name": "Z.-J. Chen"},
+    {"@type": "Person", "name": "T. Huang"},
+    {"@type": "Person", "name": "K. Wu"},
+    {"@type": "Person", "name": "Shenli Yuan"}
+  ],
+  "publisher": {"@type": "Organization", "name": "bioRxiv (Cold Spring Harbor Laboratory)"},
+  "about": ["allele-specific expression", "single-cell long-read RNA sequencing", "de novo variant calling", "genomic imprinting", "isoform analysis"]
+}
+</script>
+
+<!-- ============ Structured data: SoftwareApplication ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ANCHOR",
+  "applicationCategory": "BioinformaticsApplication",
+  "applicationSubCategory": "Single-cell long-read RNA analysis",
+  "operatingSystem": "Linux",
+  "description": "ANCHOR is a haplotype-aware framework for single-cell long-read RNA sequencing that performs de novo expressed-variant discovery, molecule-level haplotype assignment and isoform-resolved allelic quantification, without a pre-existing phased genotype and without deep learning.",
+  "codeRepository": "https://github.com/fzc1997/ANCHOR",
+  "url": "https://fzc1997.github.io/ANCHOR/",
+  "citation": "https://doi.org/10.64898/2026.06.08.730656",
+  "author": {"@type": "Person", "name": "Z.-C. Fu"},
+  "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+}
+</script>
+
+<!-- ============ Structured data: FAQPage ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Does ANCHOR need a phased genotype or reference variants?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. ANCHOR performs de novo expressed-variant discovery from the RNA reads alone, so it needs no pre-existing phased or sample-specific genotype."}},
+    {"@type": "Question", "name": "Does ANCHOR use deep learning?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. ANCHOR uses a signed-graph caller, a pair hidden Markov model and a beta-binomial UMI model — no neural network — yet reaches 95.6% best F1 on HG002, above the deep-learning caller Clair3-RNA at 85.4%."}},
+    {"@type": "Question", "name": "What inputs and outputs does ANCHOR use?",
+     "acceptedAnswer": {"@type": "Answer", "text": "ANCHOR takes aligned single-cell long-read RNA reads and outputs allele-1 and allele-2 counts per cell, per gene and per isoform, enabling isoform-resolved allele-specific expression and parent-of-origin analysis."}}
+  ]
+}
+</script>
+</head>
+<body>
+<main class="wrap">
+
+<h1>ANCHOR: haplotype-aware allelic and isoform analysis for single-cell long-read RNA sequencing</h1>
+<p class="sub">A haplotype-aware framework for de novo variant calling and isoform-resolved allele-specific expression from single-cell long reads.</p>
+
+<div class="badges">
+  <a href="https://www.biorxiv.org/content/10.64898/2026.06.08.730656v1">bioRxiv preprint</a>
+  <a href="https://doi.org/10.64898/2026.06.08.730656">DOI 10.64898/2026.06.08.730656</a>
+  <a href="https://github.com/fzc1997/ANCHOR">GitHub: fzc1997/ANCHOR</a>
+</div>
+
+<div class="tldr">
+<strong>TL;DR</strong> — ANCHOR is a haplotype-aware framework that performs <em>de novo</em> variant calling, molecule-level haplotype assignment and isoform-resolved allelic quantification directly from single-cell long-read RNA sequencing, <strong>without any pre-existing phased genotype and without deep learning</strong>. On the GIAB HG002 single-cell benchmark ANCHOR reaches a best F1 of 95.6%, ahead of Clair3-RNA (85.4%) and LongCallR (73.0%) (<a href="https://www.biorxiv.org/content/10.64898/2026.06.08.730656v1">bioRxiv 2026</a>). <span class="meta">Updated 2026-07-20.</span>
+</div>
+
+<h2>What is ANCHOR?</h2>
+<p>ANCHOR is a computational framework for <strong>haplotype- and isoform-resolved allele-specific expression (ASE) from single-cell long-read RNA sequencing</strong>. Given only aligned long reads, ANCHOR discovers expressed heterozygous variants <em>de novo</em>, assigns each transcript molecule to one of two parental haplotypes, and reports allele-1 and allele-2 counts per cell, per gene, and per isoform (<a href="https://doi.org/10.64898/2026.06.08.730656">Fu et al., bioRxiv 2026</a>). Because isoforms are defined by observed splice junctions rather than by reference mapping, ANCHOR preserves allele-specific splicing instead of collapsing it onto a reference transcript.</p>
+
+<h2>What problem does ANCHOR solve?</h2>
+<p>ANCHOR solves allele- and isoform-resolved transcriptome analysis at single-cell resolution, a task that stays computationally hard because of sparse coverage, sequencing errors, incomplete variant information, and reference-biased transcript assignment. Earlier short-read ASE measurements are local: they cannot be linked back to the full-length RNA molecule or its splice structure, so allele-specific isoform usage is difficult to resolve (<a href="https://doi.org/10.64898/2026.06.08.730656">bioRxiv 2026</a>). ANCHOR closes this gap by working from RNA reads alone, with no requirement for a matched DNA genotype.</p>
+
+<h2>How does ANCHOR work?</h2>
+<p>ANCHOR combines three components into one probabilistic pipeline. A <strong>signed-graph variant caller</strong> discovers heterozygous sites from the reads themselves; a <strong>pair hidden Markov model</strong> integrates per-site likelihoods along each read; and a <strong>beta-binomial UMI aggregation</strong> step collapses reads within each UMI into a four-state posterior (allele 1, allele 2, mixed, unknown) before summing per cell and per isoform. On a chromosome-11 pilot of 4.15 million molecules by 1.34 million sites, the alternating optimization converged within 8 iterations to 99.61% weighted agreement, and the two-colouring reproduced the observed sign structure with 99.5% agreement on real data (<a href="https://doi.org/10.64898/2026.06.08.730656">bioRxiv 2026</a>).</p>
+
+<h2>How does ANCHOR compare to Clair3-RNA and LongCallR?</h2>
+<p>ANCHOR outperforms both tested long-read RNA callers on the GIAB HG002 single-cell PacBio held-out benchmark. As the authors state, ANCHOR is &ldquo;a haplotype-aware framework ... without requiring a pre-existing phased genotype or deep learning,&rdquo; which is the main design difference from genotype-dependent or deep-learning callers.</p>
+
+<table>
+<thead><tr><th>Method</th><th>Precision</th><th>Recall</th><th>Best F1</th><th>Phased genotype needed?</th></tr></thead>
+<tbody>
+<tr><td>ANCHOR</td><td>94.5%</td><td>96.8%</td><td>95.6%</td><td>No</td></tr>
+<tr><td>Clair3-RNA</td><td>98.4%</td><td>75.4%</td><td>85.4%</td><td>No (deep-learning caller)</td></tr>
+<tr><td>LongCallR</td><td>95.3%</td><td>59.2%</td><td>73.0%</td><td>No</td></tr>
+</tbody>
+</table>
+
+<p>The gap is driven by recall: at the best-F1 operating point ANCHOR recovers 96.8% of true heterozygous sites versus 75.4% for Clair3-RNA, while staying accurate down to two-UMI sites (recall 97.4%). Averaged across held-out chromosomes ANCHOR holds a mean F1 of 95.7% (range 93.2%&ndash;97.1%), and it leads a six-method cross-sample comparison on mouse single-cell data (<a href="https://doi.org/10.64898/2026.06.08.730656">bioRxiv 2026, Fig. 2&ndash;3</a>).</p>
+
+<h2>When should you not use ANCHOR?</h2>
+<p>ANCHOR is not a universal genotyper. Its inference remains contingent on sufficient expressed heterozygosity, mappability, and long-read coverage, and on a study design in which allele labels can be assigned (<a href="https://doi.org/10.64898/2026.06.08.730656">bioRxiv 2026</a>). In one bulk Iso-Seq sample at coverage &ge; 10, Clair3-RNA overtakes ANCHOR because ANCHOR&rsquo;s cell-level features lose signal in bulk data &mdash; so for deep bulk data without single-cell structure, a dedicated bulk caller may fit better. ANCHOR targets diploid single-cell long-read transcriptomes.</p>
+
+<h2>What did ANCHOR discover in mouse gastrulation?</h2>
+<p>Applied to newly generated single-cell long-read RNA-seq from reciprocal F1 hybrid mouse embryos across gastrulation (E6.5&ndash;E8.5), ANCHOR resolved cell-type- and isoform-specific parent-of-origin imprinting across 55,729 single cells. It identified an antagonistic, maternally biased <em>Sgce</em> isoform associated with an L1MC1 transposon junction &mdash; a finding only visible at isoform resolution, demonstrating why molecule-level haplotype assignment matters (<a href="https://doi.org/10.64898/2026.06.08.730656">bioRxiv 2026</a>).</p>
+
+<h2>Availability and citation</h2>
+<p>The ANCHOR software is available at <a href="https://github.com/fzc1997/ANCHOR">github.com/fzc1997/ANCHOR</a>, and the code reproducing all figures and benchmarks at <a href="https://github.com/fzc1997/ANCHOR-paper">github.com/fzc1997/ANCHOR-paper</a>. Cite: Fu Z.-C. et al., &ldquo;ANCHOR: haplotype-aware allelic and isoform inference from single-cell long-read RNA sequencing with de novo variant calling,&rdquo; bioRxiv 2026, DOI <a href="https://doi.org/10.64898/2026.06.08.730656">10.64898/2026.06.08.730656</a>.</p>
+
+<h2>ANCHOR FAQ (frequently asked questions)</h2>
+
+<p class="q">Does ANCHOR need a phased genotype or reference variants?</p>
+<p>ANCHOR needs no phased genotype and no reference variants: it performs <em>de novo</em> expressed-variant discovery from the RNA reads alone, requiring no pre-existing phased or sample-specific genotype (<a href="https://doi.org/10.64898/2026.06.08.730656">Fu et al., bioRxiv 2026</a>).</p>
+
+<p class="q">Does ANCHOR use deep learning?</p>
+<p>ANCHOR uses no deep learning: it relies on a signed-graph caller, a pair hidden Markov model, and a beta-binomial UMI model, yet reaches 95.6% best F1 on the HG002 benchmark, above the deep-learning caller Clair3-RNA at 85.4% (<a href="https://doi.org/10.64898/2026.06.08.730656">Fu et al., bioRxiv 2026</a>).</p>
+
+<p class="q">What inputs and outputs does ANCHOR use?</p>
+<p>ANCHOR takes aligned single-cell long-read RNA reads as input and outputs allele-1 and allele-2 counts per cell, per gene, and per isoform, enabling isoform-resolved allele-specific expression and parent-of-origin imprinting analysis (<a href="https://doi.org/10.64898/2026.06.08.730656">Fu et al., bioRxiv 2026</a>).</p>
+
+<footer>
+<p>ANCHOR &mdash; Fu Z.-C. et al., bioRxiv 2026, DOI <a href="https://doi.org/10.64898/2026.06.08.730656">10.64898/2026.06.08.730656</a>. Corresponding author: Shenli Yuan (Guangzhou Medical University). Content on this page is drawn from the preprint; figures and numbers are as reported there.</p>
+</footer>
+
+</main>
+</body>
+</html>

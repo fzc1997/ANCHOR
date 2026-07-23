@@ -1,0 +1,30 @@
+# ANCHOR site — allow AI retrieval crawlers explicitly (GEO)
+# Retrieval bots that produce citations in generative answers:
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+# Everyone else (Googlebot, Bingbot, etc.)
+User-agent: *
+Allow: /
+
+Sitemap: https://fzc1997.github.io/ANCHOR/sitemap.xml
